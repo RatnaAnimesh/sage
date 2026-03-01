@@ -78,5 +78,29 @@ class AtomSpace(Category):
              res.update(self._links_by_type[entity_type])
         return res
 
+    def prune_hypotheses(self, confidence_threshold: float = 0.05) -> int:
+        """
+        Garbage Collection Optimization for laptop-scale constraints.
+        Removes Epistemic Foraging hypotheses that failed Do-Calculus bounds
+        repeatedly to free up RAM.
+        """
+        initial_count = len(self.morphisms)
+        links_to_remove = []
+        
+        for link in self.morphisms:
+            val = link.properties.get("truth_value")
+            if val and val.c < confidence_threshold:
+                 links_to_remove.append(link)
+                 
+        for link in links_to_remove:
+             # Remove from sets
+             self.morphisms.remove(link)
+             if link.type in self._links_by_type:
+                 self._links_by_type[link.type].discard(link)
+             if link.name in self._name_index:
+                 del self._name_index[link.name]
+                 
+        return initial_count - len(self.morphisms)
+
     def __repr__(self) -> str:
         return f"<AtomSpace '{self.name}': {len(self.objects)} Atoms, {len(self.morphisms)} Links>"
