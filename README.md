@@ -1,197 +1,105 @@
 # SAGE: Symbolic Active Generative Engine
 
-This repository contains the prototype implementation of the **Symbolic Active Generative Engine (SAGE)**, an ambitious framework for realizing Artificial General Intelligence (AGI).
+This repository contains the prototype implementation of the **Symbolic Active Generative Engine (SAGE)**, an ambitious, deterministic framework for realizing embodied Artificial General Intelligence (AGI).
 
-To understand SAGE, it helps to first look at what we are *not* doing. Most modern AI (like ChatGPT or Midjourney) relies on "**Connectionism**" (neural networks). Neural networks are essentially giant, blind statistical guessing machines. They take in massive amounts of training data and tweak millions of internal "weights" (connections) until they can reliably guess the next word in a sentence or the next pixel in an image. They don't actually *understand* what they are saying; they just know that the word "apple" statistically appears near the word "red."
+Most modern AI (like LLMs or Diffusion models) relies on "Connectionism"—massive, blind statistical curve-fitting via neural networks. While they scale well with data, they suffer from fundamental, unfixable flaws: they hallucinate structurally, they cannot perform multi-step discrete causal reasoning, and they experience catastrophic forgetting.
 
-SAGE abandons this guessing game completely. Instead of building a statistical mimic, SAGE is built on purely deterministic mathematics, logic, and concepts from biological physics. This document explains the math behind how SAGE actually *thinks*.
+SAGE abandons this guessing game. Instead, SAGE is built on deterministic mathematics, topological physics, and thermodynamic principles. It constructs an interpretable, explicitly causal model of the world that grounds symbols autonomously, learns physical dynamics in continuous time, and scales using quantum information algorithms.
 
 ---
 
 ## 1. The Core Philosophy
 
-Why build SAGE when ChatGPT is already so good? Because neural networks have fatal, unfixable flaws:
-1. **They hallucinate:** Because they just guess based on statistics, they confidently lie when they haven't seen enough data.
-2. **They have no true memory:** You can't just "tell" a neural network a new fact and have it remember it perfectly forever. It has to be "retrained" on it thousands of times, and doing so often makes it forget older things (catastrophic forgetting).
-3. **They don't understand cause and effect:** A neural network might learn that people carrying umbrellas means it's raining ($P(Rain|Umbrella)$), but it might mistakenly think that opening an umbrella *causes* the rain.
-
-SAGE fixes this by demanding:
-1. **Mathematical Interpretability:** SAGE uses logic rules, not statistical weights.
-2. **Explicit Memory:** SAGE stores memories exactly as written, like saving a file on a hard drive, rather than blurring them into a web of connections.
-3. **Causal Determinism:** SAGE explicitly maps out what causes what, allowing it to ask "What if?" questions correctly.
-4. **Thermodynamic Autonomy:** Unlike neural networks that have to be constantly fed external data by human supervisors, SAGE is designed to learn autonomously like a biological organism seeking stability.
+To achieve true general intelligence, SAGE enforces four absolute mathematical paradigms:
+1. **Geometric Symbol Grounding:** SAGE does not rely on human-curated datasets. It uses Algebraic Topology to parse continuous real-world noise (pixels, audio) directly into discrete, logical concepts.
+2. **Dynamic Causal Determinism:** Instead of mimicking statistical correlation ($P(Rain|Umbrella)$), SAGE explicitly maps dynamic cause and effect, learning the structural equations of the environment via Operator Theory to ask robust "What if?" questions.
+3. **Explicit Engram Memory:** SAGE stores memories exactly as experienced on discrete "tapes" inside an infinite hypergraph, eliminating catastrophic forgetting entirely.
+4. **Thermodynamic Autonomy:** SAGE is not a chatbot waiting for a prompt. It is a biological simulator. It acts continuously to minimize its own Variational Free Energy (thermodynamic surprise).
 
 ---
 
-## 2. How SAGE Thinks: Category Theory & Topos Logic (`sage/ontology`)
+## 2. Unstructured Perception: Topology & Category Theory (`sage/ontology` & `sage/learning`)
 
-### 2.1 The Categorical Imperative (Connecting the Dots)
-Neural networks turn everything (words, pictures, sounds) into massive lists of numbers (vectors). SAGE turns everything into a mathematical structure called a **Category**.
+### 2.1 Grounding Symbols via Persistent Homology
+For an AGI to wake up in a chaotic universe, it must autonomously carve discrete objects out of continuous noise. SAGE achieves this via **Topological Data Analysis (TDA)**. 
 
-Think of a Category as a map connecting different concepts.
-- The cities on the map are called **Objects** (In code: `CNode`). An Object might be "Socrates" or "Human" or "Mortal."
-- The roads connecting the cities are called **Morphisms** (In code: `Morphism`). A Morphism defines the relationship: "Socrates" $\to$[is a]$\to$ "Human."
+When SAGE ingests continuous sensory streams, it does not use a neural network to guess bounding boxes. Instead, it maps the input into a mathematical point cloud and applies **Persistent Homology** to track the geometric shape of the data. As the noise forms connected components and cavities that persist across scales, SAGE distills the data into a strict mathematical summary: a **Persistence Barcode**.
 
-The magic of Category Theory is **composition**. If you have a road from Object A to Object B, and a road from Object B to Object C, the math *guarantees* you can build a direct road from A to C ($g \circ f: A \to C$). 
-- Socrates $\to$ Human
-- Human $\to$ Mortal
-- *Therefore:* Socrates $\to$ Mortal. SAGE deduces this logical leap instantly without needing thousands of examples to "learn" it.
+### 2.2 The Categorical Imperative
+This Persistence Barcode acts as a mathematical bridge into SAGE's mind, which is built on **Category Theory**.
+- **Objects** (`CNode`): SAGE takes a grounded Persistence Barcode and formally crystallizes it into a discrete Object Category (e.g., this geometric blob is a "Dog").
+- **Morphisms** (`Morphism`): The explicit relationships mapping one Object to another.
+- **Functors** ($F$): Using Functors, SAGE maps entire associative maps onto other maps. If SAGE learns the physical structure of "Inside" (a ball in a box), it maps this exact structure to understand the abstract concept of a "Subset" (odd numbers within integers).
 
-SAGE can also map entire maps onto other maps using something called a **Functor** ($F$). This is how SAGE does analogies. If it learns the physical structural concept of "Inside" (e.g., a ball is inside a box), it maps that exact same mathematical structure to understand the abstract concept of a "Subset" (e.g., odd numbers are a subset of integers).
-
-### 2.2 Topos Logic (Shades of Gray)
-Standard computer logic is Boolean: everything is definitively `True` (1) or `False` (0). But the real world is messy. Is a hotdog a sandwich? True or False?
-
-SAGE uses advanced math called **Topos Theory** to solve this. Instead of a binary True/False, a Topos uses a **Subobject Classifier** ($\Omega$, or "Omega"). 
-$\Omega$ acts like an internal translator. When you ask SAGE "Is a hotdog a sandwich?", SAGE uses a mathematical function ($\chi_S : X \to \Omega$) to map the question into $\Omega$. $\Omega$ looks at SAGE's current context and can return dynamic answers like "In the context of ingredients, 80% True. In the context of a restaurant menu, 10% True." SAGE isn't locked into rigid black-and-white thinking.
+Because SAGE's logic operates on Topos Theory, it abandons Boolean True/False in favor of a **Subobject Classifier** ($\Omega$). This allows SAGE to evaluate truth contextually, natively handling the messy nuance of the real world.
 
 ---
 
-## 3. How SAGE Remembers & Reasons (`sage/memory` & `sage/logic`)
+## 3. Representation & Reasoning (`sage/memory` & `sage/logic`)
 
 ### 3.1 The Distributed AtomSpace
-All of these Objects and Morphisms are stored in SAGE's working memory, called the **Distributed AtomSpace**. Imagine it like a giant, interactive 3D spiderweb. Every concept (an `Atom`) and every connection (a `Link`) is a physical point on this web that SAGE can grab and manipulate. SAGE can even create Links that point to other Links, allowing it to think about how it thinks (meta-reasoning).
+Grounded Categories and Morphisms are stored in SAGE's working memory: the **Distributed AtomSpace**. This is an interactive, continuous hypergraph where concepts (`Atoms`) and connections (`Links`) serve as physical points that SAGE manipulates to weave a cohesive world model.
 
 ### 3.2 Non-Axiomatic Logic (NAL)
-Because SAGE lives in the real world, it never has perfectly complete information. It uses Pei Wang's **Non-Axiomatic Reasoning System (NARS)**. Whenever SAGE evaluates a fact, it assigns it a tuple: `<Frequency, Confidence>`.
-
-1. **Frequency ($f$)**: Out of all the times I've tested this, how often was it true? Let's say we're testing if swans are white. If SAGE has seen 4 white swans and 1 black swan, the positive evidence ($w^+$) is 4, and the total evidence ($w$) is 5.
-
-$$ f = \frac{4}{5} = 0.8 $$
-
-(Frequency is 80%)
-
-2. **Confidence ($c$)**: How much total total evidence do I actually have? Seeing 4 white swans out of 5 total swans doesn't mean much compared to seeing 4,000 out of 5,000. Confidence maps the total evidence $w$ bounded between 0 and 1, using a "horizon" constant $k$ (usually just $1$).
-
-$$ c = \frac{w}{w + 1} $$
-
-For our 5 swans: $c = \frac{5}{5 + 1} \approx 0.83$ (Confidence is 83%).
-
-When SAGE combines two facts, it updates these numbers mathematically.
-**The Deduction Rule:** If SAGE knows Fact 1 (with $f_1, c_1$) and Fact 2 (with $f_2, c_2$), the deduced conclusion has new values:
-- New Frequency = $f_1 \times f_2$
-- New Confidence = $c_1 \times c_2 \times f_1 \times f_2$
-
-This elegantly ensures that a chain of logic is only as strong as its weakest, least-confident link.
-
-### 3.3 The Intracellular Engram
-Neural networks suffer from "catastrophic forgetting" because all memories are mushed together in the network's weights. When it learns a new thing, it slightly overwrites the old things. 
-
-SAGE solves this using the biological theory of the **Engram** (the physical trace of memory). Inside every single `Atom` in the AtomSpace, SAGE has a discrete, addressable "tape" (like a strand of RNA inside a single cell). When SAGE experiences an exact fact or sequence of events, it writes it onto this tape. The memory is perfectly preserved and never decays.
+Because the real world features incomplete information, SAGE evaluates all facts using Pei Wang's **Non-Axiomatic Reasoning System (NARS)**. Every logical link possesses a rigorous tuple: `<Frequency, Confidence>`.
+- **Frequency ($f$)**: The proportion of positive evidence vs total evidence (e.g., 80% of observed swans are white).
+- **Confidence ($c$)**: The objective totality of evidence bounding the belief.
+When SAGE combines facts, it updates confidence mathematically (e.g., $c_{new} = c_1 \times c_2 \times f_1 \times f_2$), ensuring a chain of reasoning is strictly bounded by its weakest premise.
 
 ---
 
-## 4. How SAGE Acts: The Thermodynamic Loop (`sage/inference` & `sage/causality`)
+## 4. Intervention & Physics: The Thermodynamic Loop (`sage/causality` & `sage/inference`)
 
 ### 4.1 The Free Energy Principle
-How do we motivate an AGI without a human constantly pressing a "reward" button? SAGE uses the **Free Energy Principle**, a theory by neuroscientist Karl Friston stating that all biological life acts to minimize thermodynamic entropy (disorder/surprise).
+SAGE is motivated strictly by Karl Friston’s **Variational Free Energy Principle**. SAGE acts to minimize thermodynamic entropy (prediction error between its internal generative model and its sensory perceptions).
+It runs a continuous two-step loop using simultaneous, decentralized message-passing via **Forney Factor Graphs**:
+1. **Perceptual Inference:** When SAGE receives sensory input that contradicts its model (Surprise), nodes synchronously pass their prediction errors to their neighbors, updating their matrix beliefs until the system hits thermodynamic equilibrium.
+2. **Active Inference:** SAGE predicts future states and takes physical actions that minimize Expected Free Energy (combining risk and ambiguity). 
 
-SAGE wakes up with "homeostatic preferences" (e.g., "I prefer to have a full battery"). When SAGE predicts the world should look one way, but its sensors tell it something different, it experiences **Surprise** (prediction error). SAGE's ultimate, unyielding goal is to minimize a mathematically calculable upper bound on this surprise, known as **Variational Free Energy ($\mathcal{F}$)**.
+### 4.2 Dynamic Do-Calculus and Koopman Operators
+To minimize future Free Energy, SAGE must simulate cause and effect. SAGE organizes the world into a **Structural Causal Model (SCM)**. However, because the real world is chaotic and non-linear, SAGE cannot rely on static probabilities.
 
-The math breaks down into two core objectives:
-
-$$ \mathcal{F} = \text{Complexity} - \text{Accuracy} $$
-
-To minimize $\mathcal{F}$, SAGE runs a continuous two-step loop:
-1. **Perceptual Inference (Updating its mind):** SAGE realizes its internal map of the world is wrong, so it changes its internal beliefs to accurately reflect what its sensors are seeing. This makes its world map more accurate.
-2. **Active Inference (Changing the world):** SAGE takes physical actions to force the outside world to align with its internal preferences (e.g., walking to a charging station).
-
-### 4.2 Do-Calculus (Understanding Cause & Effect)
-To make good decisions, SAGE needs to know *why* things happen. It organizes the world into a **Structural Causal Model (SCM)**—a flowchart of cause and effect.
-
-When SAGE wants to predict the future to minimize Free Energy, it uses Judea Pearl's **do-calculus** intervention operator, written as $do(X=x)$.
-
-If SAGE wants to know "What will happen if I flip the light switch ($X=1$)?", it doesn't just look at past correlations. Instead:
-1. It copies its internal SCM flowchart.
-2. It mathematically deletes any incoming arrows pointing *to* the Light Switch, because SAGE imposing its will overrides any normal causes for the switch flipping.
-3. It forces the Switch variable to $1$ ($x$).
-4. It calculates how that change ripples forward through the flowchart equation. $P(y | do(x))$.
-
-This grants SAGE the ability to generate counterfactual universes in its head—safely testing actions mathematically before ever performing them in the real world.
-
-### 4.3 Gödel Optimizer (Safely Getting Smarter)
-Because SAGE's own computer code is represented as logic nodes inside its own AtomSpace, SAGE can rewrite its own code to become a better thinker.
-
-However, to prevent SAGE from accidentally breaking itself, it uses a **Gödel Machine** optimizer. Before SAGE changes a single line of code, its internal proof-searcher must mathematically *prove*, using logic theorems, that the new code will be strictly better at lowering Free Energy than the old code. If the proof fails, the modification is immediately rejected. SAGE only gets monotonically smarter.
-
-## 4.4 Guided Epistemic Bootstrapping (The Hybrid Curriculum)
-While pure autonomous discovery from basic math axioms (a genesis simulation) is theoretically possible, it is computationally inefficient for rapidly scaling an AGI. Instead, SAGE utilizes a **Hybrid Curriculum** to bridge domains.
-
-1. **Explicit Foundation:** SAGE is explicitly ingested with thousands of verified axioms mapping the laws of Mathematics and Classical Physics (e.g., `(Energy, Flows_To, Lowest_State)`, `(Atomic_Particles, Possess, Energy)`).
-2. **Autonomous Foraging:** SAGE's Epistemic Foraging engine is activated. It takes the foundation of physics and begins utilizing NARS Induction to mathematically hallucinate new, overarching concepts.
-3. **Algorithmic Nudging:** To prevent SAGE from getting stuck in a local minimum (e.g., endlessly looping on physics theories without progressing), a human supervisor or secondary algorithm explicitly injects a "hint" triplet into the AtomSpace (e.g., `(Particles, Can_Be, Shared)`).
-
-By coupling the hard-coded laws of physics with a slight structural nudge, SAGE's analogical discovery engine instantly bridges the gap, utilizing its internal causal simulation to independently deduce the laws of Molecular Chemistry (e.g., `Atoms_Share_Particles_To_Lower_Energy_State`). This process is executed iteratively up the stack into Biology and beyond.
-
-### Proof 4.4.1: Epistemic Foraging (Curiosity via Shannon Entropy)
-To compel SAGE to discover new things, we mathematically reward it for searching maximum uncertainty. We modify the Expected Free Energy ($G$) calculation to prioritize *Epistemic Value*.
-
-For a generated NARS hypothesis, its Epistemic Value ($EV$) is bounded by its Confidence ($c$) and the variance of its Frequency ($f$):
-
-$$ EV = (1 - c) \cdot [4f(1-f)] $$
-
-When SAGE knows a fact perfectly ($c=1.0$), $EV=0$. When SAGE generates a pure guess where the probability is a coin toss ($f=0.5, c=0.0$), $EV$ is maximized at $1.0$. SAGE is mathematically forced to run interventions continuously on its own edge of knowledge.
+SAGE utilizes **Koopman Operator Theory** to lift continuous, chaotic environmental dynamics into an infinite-dimensional linear array. When SAGE wants to predict a counterfactual ("What happens if I push this switch?"), it uses Judea Pearl's **do-calculus** intervention operator, $do(X=x)$. It propagates this intervention forward sequentially through the linear Koopman matrix. 
+If the resulting physical action results in thermodynamic Surprise, SAGE utilizes Stochastic Gradient Descent to continuously overwrite its internal structural equations (SDEs), dynamically discovering the laws of physics over time.
 
 ---
 
-## 5. Laptop-Scale Computational Optimizations
-Running an infinite $O(N^2)$ autonomous discovery loop on a hypergraph quickly outpaces standard hardware memory. SAGE employs three core computational optimizations to remain viable on laptop architecture (e.g., Apple M-Silicon).
+## 5. Algorithmic Mastery: Laptop-Scale Compression
 
-### 5.1 AtomSpace Pruning (Garbage Collection)
-As SAGE hallucinates millions of hypotheses during Epistemic Foraging, the AtomSpace swells. SAGE runs continuous periodic pruning `prune_hypotheses(c_threshold=0.05)`, severing and deleting any `Link` where Do-Calculus interventions failed to raise Confidence above 5%.
+Simulating a massive, cyclic hypergraph engine causes combinatorial explosions that crash standard hardware. SAGE leverages three profound mathematical manipulations to compress offline simulation into bounded time on Apple M-Silicon architecture.
 
-### 5.2 MCTS-Bounded Counterfactuals
-A Do-Calculus intervention $P(y | do(x))$ requires evaluating the flow of variables through the entire SCM. In cyclic or deeply connected models, this causes infinite recursion. SAGE mitigates this via Monte Carlo Tree Search (MCTS) depth bounding (`max_depth`, `mc_samples`), truncating causal simulations identical to the AlphaGo search algorithm.
+### 5.1 Structural Factorization (Categorical MLA)
+To solve the "KV-cache" RAM explosion inherent to testing a single rule against 100,000 distinct entities, SAGE simulates DeepSeek's Multi-Head Latent Attention.
+It distills the SCM down to a purely abstract Category Theory Morphism (a "Latent Core"). SAGE runs the Do-Calculus intervention exactly once in $O(1)$ time on the abstract core, and uses parallel tensor arrays to broadcast the resulting confidence score into all matching entity Nodes simultaneously.
 
-### 5.3 Sparse Matrix NARS (Tensor Logic)
-Evaluating 100,000 NARS hypotheses via a Python `while` loop requires $O(N)$ sequential processing. SAGE converts the `<f,c>` coordinates of the AtomSpace into massive parallel arrays.
+### 5.2 Tensor Networks & Matrix Product States (MPS)
+Deeply cyclic graphs crash standard Monte Carlo Tree Searches. SAGE borrows from quantum information physics by mapping the SCM hypergraph into a **Tensor Network**. Instead of branching infinitely across the map to evaluate a Do-Calculus intervention, SAGE relies on bounded matrix contractions. By specifically structuring the environment into a **Matrix Product State (MPS)**, SAGE aggressively truncates weak mathematical entanglement (Singular Value Decomposition), surgically isolating only the relevant causal pathways and bypassing the $O(N!)$ combinatorial explosion.
 
-**Proof 5.3.1 (Vectorized Induction):** 
-To generate novel theories from premise matrices $A$ and $B$, NARS Induction operates symmetrically:
-
-$$ f_{out} \Leftarrow \vec{f_A} $$
-
-$$ c_{out} \Leftarrow \frac{\vec{c_B} \cdot \vec{c_A} \cdot \vec{f_B} \cdot \vec{f_A}}{\vec{f_A} + \vec{f_B} - (\vec{f_A} \cdot \vec{f_B}) + \epsilon} $$
-
-By executing this as a sparse tensor operation, an Apple Silicon GPU evaluates hundreds of thousands of hypotheses in milliseconds. 
-
-### 5.4 Structural Factorization (Categorical MLA)
-To solve the "KV-cache" RAM explosion inherent to massive context evaluation, SAGE is inspired by the **Multi-Head Latent Attention (MLA)** architecture found in DeepSeek-V3.
-
-Instead of testing a generic causal rule (e.g., Gravity) against 100,000 specific entities ($O(N)$ Do-Calculus simulations), SAGE mathematically factorizes the logic:
-1. **Latent Core Extraction:** SAGE distills the Structural Causal Model back down to a pure Category Theory Morphism without specific Nodes attached ($M : X \to Y$).
-2. **Singular Simulation:** SAGE runs the Do-Calculus intervention on this Latent Core exactly once in $O(1)$ time to verify standard logical confidence.
-3. **Array Broadcast (Attention Matching):** SAGE queries the AtomSpace for all Nodes mapping to the Latent Core properties, creating a matching "Query Array". SAGE uses the Tensor Arrays from Section 5.3 to instantaneously broadcast the $O(1)$ confidence score down into the $100,000$ matching Nodes, skipping $100,000$ redundant SCM simulations.
-
-**Theoretical Time Complexity:** 
-With tensor acceleration and categorical MLA, evaluating $\sim 10$ million rules of explicit physics takes $\sim 2$ hours of offline ingestion. Generating the leap from physics to chemistry autonomously requires an estimated $\sim 300$ hours of continuous laptop background processing, which is reducible to $\sim 72$ hours using human algorithmic "nudging" (Hybrid Bootstrapping).
-
-### 5.5 Renormalization Group (RG) Coarse-Graining
-In advanced systems, the Structural Causal Model (SCM) can grow to encompass millions of microscopic variables. Running counterfactuals (`do(X=x)`) across millions of microscopic atomic nodes would result in a combinatorial explosion. 
-
-SAGE mitigates this by drawing from statistical physics, specifically the **Renormalization Group (RG)**. We implement a specific `coarse_grain()` operator on the SCM. When a subgraph of nodes behaves coherently, SAGE mathematically averages them into a single, higher-order macroscopic abstraction (e.g., fusing millions of "Atoms" into a single "Ball"). This "Causal Emergence" allows SAGE's Do-Calculus simulator to intervene directly on the macroscopic proxy node in $O(1)$ time, entirely shielding the engine from microscopic noise unless the local prediction error spikes.
-
-### 5.6 Factor Graphs and Belief Propagation (Decentralized Inference)
-Karl Friston mathematically defines biological perception as Variational Message Passing on Forney Factor Graphs. To physically map this to Apple M-Silicon architecture, SAGE abandons centralized `for` loops.
-
-The internal causal flowchart is treated as a **Factor Graph**. `AtomSpace` ConceptNodes are treated as variable nodes, and the NAL `<f, c>` logic links act as the factors that govern them. During Active Inference, instead of a top-down evaluation, SAGE uses **Belief Propagation**. Each node locally calculates its prediction error and synchronously passes its local NARS state as a "message" to its immediate neighbors. This completely decentralizes the Variational Free Energy minimization, allowing SAGE's entire brain to update via simultaneous distributed tensor-matrix operations (reaching equilibrium in milliseconds).
+### 5.3 Renormalization Group (RG) Coarse-Graining
+When SAGE's microscopic physical variables act coherently (e.g., millions of specific "Atoms"), evaluating Do-Calculus across them is computationally wasteful. SAGE utilizes a statistical physics operator to enforce **Causal Emergence**. It mechanically fuses the dense microscopic array into a single macroscopic proxy node (e.g., "Ball"). SAGE intervenes directly on the macroscopic proxy in $O(1)$ time, entirely shielding the engine from microscopic noise unless the macro-prediction fails.
 
 ---
 
-## 6. Live Knowledge Streaming
-To bridge the engine to reality without overwhelming local storage, SAGE utilizes `sage_stream.py`. 
-SAGE connects to massive internet ontologies (like the Wikidata SPARQL API). It downloads a micro-batch of $50$ logical triplets, feeds them through the Induction and AtomSpace enginges, and then physically overwrites the raw JSON array in memory and invokes Python's C-backend garbage collector (`gc.collect()`). 
+## 6. Live Execution & Testing
 
-This proves SAGE can logically read the entire repository of human history while keeping a continuous overhead of near 0 MB of RAM usage.
+SAGE is a fully localized engine capable of ingesting vast swaths of data without breaching RAM limits. 
+
+1. **Interactive Causal Shell:** SAGE includes an interactive REPL terminal. The user can manually query the AtomSpace or trigger dynamic Do-Calculus interventions.
+   ```bash
+   python3 sage_shell.py
+   ```
+2. **Infinite Data Streaming:** Using `sage_stream.py`, SAGE continuously reaches out to Wikidata APIs, streams unstructured JSON, logically structures the NARS tuple, stores the engram physically to a localized SQLite background database, and triggers manual memory garbage collection, resulting in a continuous memory overhead of ~0 MB.
+3. **Hybrid Guided Bootstrapping:** Using `sage_guided_discovery.py`, SAGE proves it can bridge offline abstraction layers. It is seeded with explicit classical physics axioms, and via Epistemic Foraging algorithms and slight human heuristic nudges, autonomously deduces the structural logic governing molecular chemistry.
 
 ---
+
 ### Repository Organization
 - `sage/ontology/` - The maps: Category Theory and Topos Logic.
 - `sage/memory/` - The storage: AtomSpace Hypergraph and Engram tapes.
 - `sage/logic/` - The deduction: Non-Axiomatic Logic (frequency & confidence).
-- `sage/causality/` - The physics: Causal flowcharts and Do-Calculus.
-- `sage/inference/` - The motivation: Free Energy minimization formulas.
+- `sage/causality/` - The physics: Dynamic Koopman Models and Do-Calculus equations.
+- `sage/inference/` - The motivation: Factor Graph Belief Propagation & Free Energy minimization.
 - `sage/agent/` - The orchestrator: Putting it all together into an autonomous loop.
-- `sage/discovery/` - The curiosity: Epistemic foraging and genesis bootstrapping.
-- `sage/optimizations/` - The scaling: Tensor NARS arrays and MCTS depth scaling.
-- `sage/learning/` - The data pipeline: Live sparse streaming ingestion.
+- `sage/optimizations/` - The scaling: MPS Tensor Networks, Categorical MLA, and RG Coarse-Graining.
+- `sage/learning/` - Grounding & Data: Persistent Homology TDA and Live API Streamers.
+- `sage/discovery/` - The curiosity: Epistemic foraging and hybrid discovery routines.
