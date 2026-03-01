@@ -1,128 +1,129 @@
 # SAGE: Symbolic Active Generative Engine
 
-This repository contains the prototype implementation of the **Symbolic Active Generative Engine (SAGE)**, an ambitious framework for realizing Artificial General Intelligence (AGI) strictly outside the prevalent connectionist paradigm.
+This repository contains the prototype implementation of the **Symbolic Active Generative Engine (SAGE)**, an ambitious framework for realizing Artificial General Intelligence (AGI).
 
-By abandoning gradient descent, homogenous neural tensors, and backpropagation, SAGE is formulated entirely upon advanced theories in Mathematical Logic, Theoretical Computer Science, and computational-neurobiological structures such as the *Free Energy Principle*.
+To understand SAGE, it helps to first look at what we are *not* doing. Most modern AI (like ChatGPT or Midjourney) relies on "**Connectionism**" (neural networks). Neural networks are essentially giant, blind statistical guessing machines. They take in massive amounts of training data and tweak millions of internal "weights" (connections) until they can reliably guess the next word in a sentence or the next pixel in an image. They don't actually *understand* what they are saying; they just know that the word "apple" statistically appears near the word "red."
 
-This document serves as both a reference for the codebase and a theoretical textbook for understanding the rigorous mathematics governing the engine's cognitive processes.
-
----
-
-## 1. Epistemological Foundations
-
-Modern connectionist systems (e.g., Deep Mamba, Transformers) act as tremendously sophisticated, high-dimensional function approximators ($f(x) \approx y$). While they have demonstrated remarkable capabilities in statistical interpolation and manifold learning, they suffer epistemologically from a fundamental lack of symbolic grounding, explicit memory architecture, and deterministic causal understanding.
-
-SAGE posits that true AGI requires the following structural guarantees:
-1. **Mathematical Interpretability:** All internal representations must be strictly defined via compositional logic (Category Theory).
-2. **Explicit Addressable Memory:** Long-term memory must be exact and non-decaying, avoiding the catastrophic forgetting inherent to weight-based distributed representation (Molecular Engrams).
-3. **Causal Determinism:** The agent must model not what correlates ($P(y|x)$) but what *causes* ($P(y|do(x))$) (Structural Causal Models).
-4. **Thermodynamic Autonomy:** The system must be driven to preserve its structural integrity by minimizing surprise against a self-contained generative world model (Active Inference).
-
-## 2. Category Theory & Topos Logic (`sage/ontology`)
-
-### 2.1 The Categorical Imperative
-Within connectionism, all data modalities (text, vision, audio) are flattened into a single homogeneous construct: Euclidean vector spaces ($\mathbb{R}^n$). In SAGE, knowledge and logic are represented structurally via **Category Theory**.
-
-A Category $\mathbf{C}$ consists of:
-- A class of **Objects** $Ob(\mathbf{C})$ (In code: `CNode`)
-- A class of **Morphisms** $Hom(\mathbf{C})$ (In code: `Morphism`) bridging Objects $A \xrightarrow{f} B$.
-
-Crucially, morphisms compose. If $f: A \to B$ and $g: B \to C$, there must exist a composite morphism $g \circ f: A \to C$. This guarantees that if the AGI understands two distinct structural relations, it automatically possesses the mathematical capacity to deduce the resulting transitive relation over arbitrary depths, completely eliminating the need for "training data" to bridge the gap.
-
-Furthermore, SAGE allows for generalization across domains via **Functors**. A Functor $F: \mathbf{C} \to \mathbf{D}$ maps every object $X \in \mathbf{C}$ to $F(X) \in \mathbf{D}$. This provides exact mathematical mappings for *analogy*; if a structural relationship holds in a spatial domain (e.g., "Inside"), SAGE uses a Functor to translate the exact same cognitive reasoning structure to a linguistic category (e.g., "Subset").
-
-### 2.2 Topos Logic and Subobject Classifiers
-To operate in a complex, stochastic world, a classical Boolean ontology (True/False) is fatally brittle. SAGE utilizes generalized categories bounded as a **Topos**.
-
-A Topos allows the logic of the AGI to be entirely localized to the morphic structures it observes via a **Subobject Classifier**, traditionally denoted as $\Omega$. Rather than mapping propositions to $\{0, 1\}$, any characteristic function $\chi_S$ describing a subobject $S \subseteq X$ maps to an element inside $\Omega$:
-$$ \chi_S : X \to \Omega $$
-
-In `sage.ontology.topos_logic.py`, the Subobject Classifier permits the AGI to hold internally consistent, context-dependent multi-valued logics. This provides the mathematical scaffolding for processing probabilistic, modal, and intuitionistic logic natively without numerical weights.
+SAGE abandons this guessing game completely. Instead of building a statistical mimic, SAGE is built on purely deterministic mathematics, logic, and concepts from biological physics. This document explains the math behind how SAGE actually *thinks*.
 
 ---
 
-## 3. Distributed Non-Axiomatic Reasoning (`sage/memory` & `sage/logic`)
+## 1. The Core Philosophy
+
+Why build SAGE when ChatGPT is already so good? Because neural networks have fatal, unfixable flaws:
+1. **They hallucinate:** Because they just guess based on statistics, they confidently lie when they haven't seen enough data.
+2. **They have no true memory:** You can't just "tell" a neural network a new fact and have it remember it perfectly forever. It has to be "retrained" on it thousands of times, and doing so often makes it forget older things (catastrophic forgetting).
+3. **They don't understand cause and effect:** A neural network might learn that people carrying umbrellas means it's raining ($P(Rain|Umbrella)$), but it might mistakenly think that opening an umbrella *causes* the rain.
+
+SAGE fixes this by demanding:
+1. **Mathematical Interpretability:** SAGE uses logic rules, not statistical weights.
+2. **Explicit Memory:** SAGE stores memories exactly as written, like saving a file on a hard drive, rather than blurring them into a web of connections.
+3. **Causal Determinism:** SAGE explicitly maps out what causes what, allowing it to ask "What if?" questions correctly.
+4. **Thermodynamic Autonomy:** Unlike neural networks that have to be constantly fed external data by human supervisors, SAGE is designed to learn autonomously like a biological organism seeking stability.
+
+---
+
+## 2. How SAGE Thinks: Category Theory & Topos Logic (`sage/ontology`)
+
+### 2.1 The Categorical Imperative (Connecting the Dots)
+Neural networks turn everything (words, pictures, sounds) into massive lists of numbers (vectors). SAGE turns everything into a mathematical structure called a **Category**.
+
+Think of a Category as a map connecting different concepts.
+- The cities on the map are called **Objects** (In code: `CNode`). An Object might be "Socrates" or "Human" or "Mortal."
+- The roads connecting the cities are called **Morphisms** (In code: `Morphism`). A Morphism defines the relationship: "Socrates" $\to$[is a]$\to$ "Human."
+
+The magic of Category Theory is **composition**. If you have a road from Object A to Object B, and a road from Object B to Object C, the math *guarantees* you can build a direct road from A to C ($g \circ f: A \to C$). 
+- Socrates $\to$ Human
+- Human $\to$ Mortal
+- *Therefore:* Socrates $\to$ Mortal. SAGE deduces this logical leap instantly without needing thousands of examples to "learn" it.
+
+SAGE can also map entire maps onto other maps using something called a **Functor** ($F$). This is how SAGE does analogies. If it learns the physical structural concept of "Inside" (e.g., a ball is inside a box), it maps that exact same mathematical structure to understand the abstract concept of a "Subset" (e.g., odd numbers are a subset of integers).
+
+### 2.2 Topos Logic (Shades of Gray)
+Standard computer logic is Boolean: everything is definitively `True` (1) or `False` (0). But the real world is messy. Is a hotdog a sandwich? True or False?
+
+SAGE uses advanced math called **Topos Theory** to solve this. Instead of a binary True/False, a Topos uses a **Subobject Classifier** ($\Omega$, or "Omega"). 
+$\Omega$ acts like an internal translator. When you ask SAGE "Is a hotdog a sandwich?", SAGE uses a mathematical function ($\chi_S : X \to \Omega$) to map the question into $\Omega$. $\Omega$ looks at SAGE's current context and can return dynamic answers like "In the context of ingredients, 80% True. In the context of a restaurant menu, 10% True." SAGE isn't locked into rigid black-and-white thinking.
+
+---
+
+## 3. How SAGE Remembers & Reasons (`sage/memory` & `sage/logic`)
 
 ### 3.1 The Distributed AtomSpace
-The representations generated by the Topos logic are instantiated in working memory via the **Distributed AtomSpace**, inspired by the OpenCog Hyperon project.
-
-The AtomSpace is a dynamic directed hypergraph. Unlike traditional graphs, nodes (`Atoms`) and edges (`Links`) are typed identically on the computational substrate. A `Link` can point to another `Link`, allowing for recursive meta-reasoning (i.e., a logic rule evaluating another logic rule).
+All of these Objects and Morphisms are stored in SAGE's working memory, called the **Distributed AtomSpace**. Imagine it like a giant, interactive 3D spiderweb. Every concept (an `Atom`) and every connection (a `Link`) is a physical point on this web that SAGE can grab and manipulate. SAGE can even create Links that point to other Links, allowing it to think about how it thinks (meta-reasoning).
 
 ### 3.2 Non-Axiomatic Logic (NAL)
-All facts and hypotheses residing in the AtomSpace are subjected to Pei Wang's Non-Axiomatic Reasoning System (NARS). SAGE operates under the **Assumption of Insufficient Knowledge and Resources (AIKR)**. It replaces classical absolute truth with experience-grounded evidential semantics.
+Because SAGE lives in the real world, it never has perfectly complete information. It uses Pei Wang's **Non-Axiomatic Reasoning System (NARS)**. Whenever SAGE evaluates a fact, it assigns it a tuple: `<Frequency, Confidence>`.
 
-Every proposition evaluates to a tuple `<f, c>`:
-- **Frequency ($f$)**: The proportion of positive evidence $w^+$ to total gathered evidence $w$.
-  $$ f = \frac{w^+}{w} $$
-- **Confidence ($c$)**: A mapping of the total absolute body of evidence $w$ onto a $(0,1)$ bound using a horizon parameter $k$ (typically 1). As evidence approaches infinity, confidence approaches 1.
-  $$ c = \frac{w}{w + k} $$
+1. **Frequency ($f$)**: Out of all the times I've tested this, how often was it true? Let's say we're testing if swans are white. If SAGE has seen 4 white swans and 1 black swan, the positive evidence ($w^+$) is 4, and the total evidence ($w$) is 5.
+  $$ f = \frac{4}{5} = 0.8 $$ (Frequency is 80%)
 
-This creates a logic engine that organically balances conviction and ignorance. In `sage.logic.nars_engine.py`, the AGI dynamically updates beliefs using exact mathematical inference rules rather than loss gradients.
+2. **Confidence ($c$)**: How much total total evidence do I actually have? Seeing 4 white swans out of 5 total swans doesn't mean much compared to seeing 4,000 out of 5,000. Confidence maps the total evidence $w$ bounded between 0 and 1, using a "horizon" constant $k$ (usually just $1$).
+  $$ c = \frac{w}{w + 1} $$
+  For our 5 swans: $c = \frac{5}{5 + 1} \approx 0.83$ (Confidence is 83%).
 
-**Example: The Deduction Rule**
-If the AGI believes $S \to M \langle f_1, c_1 \rangle$ and $M \to P \langle f_2, c_2 \rangle$, it can dynamically construct $S \to P$ where:
-$$ f_{deduction} = f_1 f_2 $$
-$$ c_{deduction} = c_1 c_2 f_1 f_2 $$
-Notice how the confidence of a deduction relies on both the previous confidences *and* the frequencies. A highly confident but largely negative premise ($c_1=0.99, f_1=0.01$) drastically reduces the confidence of the resulting cascade.
+When SAGE combines two facts, it updates these numbers mathematically.
+**The Deduction Rule:** If SAGE knows Fact 1 (with $f_1, c_1$) and Fact 2 (with $f_2, c_2$), the deduced conclusion has new values:
+- New Frequency = $f_1 \times f_2$
+- New Confidence = $c_1 \times c_2 \times f_1 \times f_2$
+
+This elegantly ensures that a chain of logic is only as strong as its weakest, least-confident link.
 
 ### 3.3 The Intracellular Engram
-SAGE completely rejects Hebbian synaptic plasticity (adjusting link weights) as the mechanism for long-term memory. Drawing on biological theories (Gallistel, 2017), memory must be independent of computation to afford true symbolic algebra.
+Neural networks suffer from "catastrophic forgetting" because all memories are mushed together in the network's weights. When it learns a new thing, it slightly overwrites the old things. 
 
-The `molecular_engram.py` models explicit memory as discrete, sequentially written arrays bound directly inside individual nodes (Atoms), analogous to intra-neuronal RNA transcription logic. This guarantees $O(1)$ recall accuracy for explicit historical sequences, eliminating catastrophic forgetting. If the AGI solves a maze, the exact topology is written as a polynucleotide-style symbolic string; it is never blurred into a numerical latent space.
+SAGE solves this using the biological theory of the **Engram** (the physical trace of memory). Inside every single `Atom` in the AtomSpace, SAGE has a discrete, addressable "tape" (like a strand of RNA inside a single cell). When SAGE experiences an exact fact or sequence of events, it writes it onto this tape. The memory is perfectly preserved and never decays.
 
 ---
 
-## 4. The Thermodynamic Agent (`sage/inference` & `sage/causality`)
-
-The true intelligence engine of SAGE is strictly defined by thermodynamic boundaries and theoretical physics, implemented via the **Free Energy Principle (FEP)** formulated by Karl Friston.
+## 4. How SAGE Acts: The Thermodynamic Loop (`sage/inference` & `sage/causality`)
 
 ### 4.1 The Free Energy Principle
-Instead of maximizing an external arbitrary reward ($R_t$) like a standard Reinforcement Learning agent, SAGE assumes life is the preservation of structural invariants. To avoid thermodynamic entropy, the agent must minimize its "Surprise" ($-\ln P(\mathbf{o})$) when interacting with the environment.
+How do we motivate an AGI without a human constantly pressing a "reward" button? SAGE uses the **Free Energy Principle**, a theory by neuroscientist Karl Friston stating that all biological life acts to minimize thermodynamic entropy (disorder/surprise).
 
-Surprise is generally intractable to calculate directly. However, we can calculate **Variational Free Energy** ($\mathcal{F}$), which serves as a rigorous upper bound on surprise. The expected free energy given a sensory observation state $o$ and internal beliefs states $s$ is mathematically expressed as:
+SAGE wakes up with "homeostatic preferences" (e.g., "I prefer to have a full battery"). When SAGE predicts the world should look one way, but its sensors tell it something different, it experiences **Surprise** (prediction error). SAGE's ultimate, unyielding goal is to minimize a mathematically calculable upper bound on this surprise, known as **Variational Free Energy ($\mathcal{F}$)**.
 
-$$ \mathcal{F} = \mathbb{E}_{q(s)} [-\ln P(o, s)] - H[q(s)] $$
-where $q(s)$ is the agent's internal approximate posterior belief, and $H$ is the Shannon entropy.
-Minimizing this quantity can be algebraically rewritten into two distinct forces:
-$$ \mathcal{F} = \underbrace{D_{KL}(q(s) || P(s|o))}_{\text{Complexity (Divergence)}} - \underbrace{\mathbb{E}_{q(s)}[\ln P(o|s)]}_{\text{Accuracy (Prediction Error)}} $$
+The math breaks down into two core objectives:
+$$ \mathcal{F} = \text{Complexity} - \text{Accuracy} $$
 
-To minimize $\mathcal{F}$, the `ActiveInferenceAgent` simultaneously executes a continuous dual-loop:
-1. **Perceptual Inference (Update $q(s)$):** The agent mathematically updates its internal models to better map the external reality.
-2. **Active Inference (Change $o$):** The agent triggers actuators/APIs to change the sensory data it is receiving to better align with its preferred priors (homeostasis).
+To minimize $\mathcal{F}$, SAGE runs a continuous two-step loop:
+1. **Perceptual Inference (Updating its mind):** SAGE realizes its internal map of the world is wrong, so it changes its internal beliefs to accurately reflect what its sensors are seeing. This makes its world map more accurate.
+2. **Active Inference (Changing the world):** SAGE takes physical actions to force the outside world to align with its internal preferences (e.g., walking to a charging station).
 
-### 4.2 Structural Causal Models (SCMs) & Do-Calculus
-For Active Inference to function, the agent must possess a deterministic generative world model ($P(o|s)$) to predict consequences. Generative Adversarial Networks (GANs) and Transformers only model statistical correlations.
+### 4.2 Do-Calculus (Understanding Cause & Effect)
+To make good decisions, SAGE needs to know *why* things happen. It organizes the world into a **Structural Causal Model (SCM)**—a flowchart of cause and effect.
 
-SAGE embeds Judea Pearl's **Structural Causal Models (SCMs)** inside the AtomSpace. These map the true causal Directed Acyclic Graphs (DAGs) generating the environment.
-To plan actions to minimize expected Future Free Energy (EFE or $G$), the agent leverages **Do-Calculus**.
+When SAGE wants to predict the future to minimize Free Energy, it uses Judea Pearl's **do-calculus** intervention operator, written as $do(X=x)$.
 
-When the agent evaluates a prospective action $X=x$, it executes a mathematical intervention via the $do()$ operator. This physically mutates a hypothetical copy of the SCM instance:
-$$ P(y | do(x)) $$
-This algorithm explicitly severs all incoming causal edges (Morphisms) pointing to $X$, fixing it as a constant $x$, and evaluates the resulting forward wave across the structural equations. This grants SAGE true Layer 3 Causal capacity—the ability to ask counterfactuals ("What would have happened if I had done $x$ instead?").
+If SAGE wants to know "What will happen if I flip the light switch ($X=1$)?", it doesn't just look at past correlations. Instead:
+1. It copies its internal SCM flowchart.
+2. It mathematically deletes any incoming arrows pointing *to* the Light Switch, because SAGE imposing its will overrides any normal causes for the switch flipping.
+3. It forces the Switch variable to $1$ ($x$).
+4. It calculates how that change ripples forward through the flowchart equation. $P(y | do(x))$.
 
-### 4.3 Gödelian Optimization (`sage/agent`)
-Because the agent possesses a discrete, categorical structural model of its own cognitive algorithms in the AtomSpace, it is capable of unbounded recursive self-improvement.
+This grants SAGE the ability to generate counterfactual universes in its head—safely testing actions mathematically before ever performing them in the real world.
 
-Using Schmidhuber's theoretical **Gödel Machine** framework (`godel_optimizer.py`), the agent possesses a proof-searcher. It may hypothesize a rewrite to its own Python source code. However, it is constrained by a strict Global Optimality metric: the `ActiveInferenceAgent` will only execute the structural code-swap if the proof-searcher can formally derive a theorem within Topos logic proving that the subsequent execution of the modified code reduces total Expected Free Energy $G$ strictly faster than the current code.
+### 4.3 Gödel Optimizer (Safely Getting Smarter)
+Because SAGE's own computer code is represented as logic nodes inside its own AtomSpace, SAGE can rewrite its own code to become a better thinker.
 
-## 5. Algorithmic Information Theory (The AIXI Limit)
-The integration of these six modules represents a computable approximation of Marcus Hutter's optimal theoretical agent, **AIXI**.
-
-AIXI determines the perfect action $a_k$ by taking the expectimax across all possible computable universes $U$, weighting the probability of each universe by its Kolmogorov Complexity (program length $l$):
-$$ a_k := \arg\max_{a_k} \sum_{o_k, r_k} \dots \max_{a_m} \sum_{o_m, r_m} [r_k + \dots + r_m] \sum_{p: U(p, a_1\dots a_m) = o_1 r_1 \dots o_m r_m} 2^{-l(p)} $$
-
-Since $U$ is infinitely unbounded, AIXI is uncomputable. However, SAGE acts as a resource-bounded ($t$, $l$) execution of AIXI (`AIXI_tl`) via its Active Inference loop. The NARS logic engine guarantees finite halting by dynamically bounding $t$ based on $\langle f, c \rangle$ urgency arrays, and the Structural Causal Model constrains the hypothesis space strictly to valid directed sub-graphs natively restricting $l(p)$.
+However, to prevent SAGE from accidentally breaking itself, it uses a **Gödel Machine** optimizer. Before SAGE changes a single line of code, its internal proof-searcher must mathematically *prove*, using logic theorems, that the new code will be strictly better at lowering Free Energy than the old code. If the proof fails, the modification is immediately rejected. SAGE only gets monotonically smarter.
 
 ---
-## Conclusion
-The SAGE architecture demonstrates that non-connectionist paradigms—relying natively upon deterministic math, explicit discrete memory mechanisms, thermodynamic bounds, and categorical logic abstractions—offer a rigorously verifiable pathway to Artificial General Intelligence, devoid of black-box approximations.
+## 5. The Limit of Intelligence (AIXI)
+If you combine Category Theory logic, NARS confidence, explicit Engram memory, Do-Calculus, and the Free Energy motivation, what do you get? A computable version of **AIXI**.
 
-### Repository Organization:
-- `sage/`
-  - `/ontology` (Category Theory, Topos Object Classifiers)
-  - `/memory` (AtomSpace Hypergraphs, Intracellular RNA tape models)
-  - `/logic` (Non-Axiomatic Reasoning Engine)
-  - `/causality` (Structural Causal Models & Do-Calculus)
-  - `/inference` (Variational Free Energy loops)
-  - `/agent` (SOAR architecture orchestration and Gödelian proofs)
-  - `test_sage.py` (Local verification runner for cognitive ticks)
+AIXI is the theoretical mathematical limit of intelligence formulated by Marcus Hutter. The AIXI equation is:
+$$ a_k := \arg\max_{a_k} \sum_{o_k, r_k} \dots \max_{a_m} \sum_{o_m, r_m} [r_k + \dots + r_m] \sum_{p: U(p, a_1\dots a_m) = o_1 r_1 \dots o_m r_m} 2^{-\text{length}(p)} $$
+
+In plain English: AIXI looks at every possible action it could take ($a_k$) across every possible completely simulated universe path ($o, r$) until the end of its lifespan ($m$). It tries to find the action path that provides the maximum possible reward. How does it know which simulated universe is real? It guesses that the simplest mathematical explanation is the most likely to be true ($2^{-\text{length}(p)}$).
+
+Perfect AIXI requires infinite computer power. By substituting infinite search with Active Inference, and infinite universes with Structural Causal Models, SAGE makes reaching the theoretical pinnacle of intelligence achievable.
+
+---
+### Repository Organization
+- `sage/ontology/` - The maps: Category Theory and Topos Logic.
+- `sage/memory/` - The storage: AtomSpace Hypergraph and Engram tapes.
+- `sage/logic/` - The deduction: Non-Axiomatic Logic (frequency & confidence).
+- `sage/causality/` - The physics: Causal flowcharts and Do-Calculus.
+- `sage/inference/` - The motivation: Free Energy minimization formulas.
+- `sage/agent/` - The orchestrator: Putting it all together into an autonomous loop.
