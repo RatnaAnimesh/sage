@@ -108,7 +108,20 @@ Because SAGE's own computer code is represented as logic nodes inside its own At
 
 However, to prevent SAGE from accidentally breaking itself, it uses a **Gödel Machine** optimizer. Before SAGE changes a single line of code, its internal proof-searcher must mathematically *prove*, using logic theorems, that the new code will be strictly better at lowering Free Energy than the old code. If the proof fails, the modification is immediately rejected. SAGE only gets monotonically smarter.
 
+## 4.4 The Genesis Bootstrapper (Autonomy from Scratch)
+Most AI needs petabytes of human-generated text to learn anything. What happens if we give SAGE nothing but four basic mathematical axioms (Peano Arithmetic and Set Theory) and turn it on?
+
+1. **Axiom 1:** Zero is a Number.
+2. **Axiom 2:** Every Number has a Successor.
+3. **Axiom 3:** Collections contain Entities.
+4. **Axiom 4:** Successors increase Quantity.
+
+SAGE enters "Genesis Mode." Using NARS Induction, it hypothesizes that applying the Successor rule repeatedly is a new concept, inventing **Addition**. Next, using Epistemic Foraging, it tries to minimize its mathematical uncertainty about "Quantity," hypothesizing that Entities can have a measurable location in a Collection—inventing **Spatial Geography / Position**. Finally, it tests if change in Position over time (Velocity) interacts with Quantity, deriving **Gravity**. 
+
+SAGE reconstructs the physical universe mathematically, layer by layer, verifying each new discovery against its Do-Calculus simulator so it never hallucinates.
+
 ---
+
 ## 5. The Limit of Intelligence (AIXI)
 If you combine Category Theory logic, NARS confidence, explicit Engram memory, Do-Calculus, and the Free Energy motivation, what do you get? A computable version of **AIXI**.
 
