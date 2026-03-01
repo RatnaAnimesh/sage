@@ -104,6 +104,12 @@ try:
         if deleted > 0:
             print(f"    [Optimizer] Pruned {deleted} dead hypothesis links.")
             
+        # 5. OFFLOAD TO DISK (Long-Term Memory)
+        # Prevents AtomSpace RAM limit from exploding by saving cold facts to SQLite
+        offloaded = space.offload_to_disk(max_ram_entities=2000)
+        if offloaded > 0:
+            print(f"    [LTM] Offloaded {offloaded} cold memories to local SQLite disk.")
+            
         print("--> Holding for next streaming chunk...\n")
         time.sleep(3.0)
 

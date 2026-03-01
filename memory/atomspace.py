@@ -6,6 +6,9 @@ Both declarative data and procedural algorithms are represented as Atoms (Nodes)
 and Links (Morphisms) seamlessly coexisting within this geometric space.
 """
 
+import sqlite3
+import json
+import os
 from typing import Dict, List, Optional, Set, Tuple, Union, Any
 from sage.ontology.category import Category, CNode, Morphism
 
@@ -34,7 +37,7 @@ class AtomSpace(Category):
     The Hypergraph repository serving as SAGE's working and declarative memory.
     Implements efficient querying over the vast web of conceptual connections.
     """
-    def __init__(self, name: str = "Global_AtomSpace"):
+    def __init__(self, name: str = "Global_AtomSpace", db_path: str = "sage_ltm.db"):
         super().__init__(name)
         # Using Category's self.objects for Atoms and self.morphisms for Links
         
@@ -42,6 +45,16 @@ class AtomSpace(Category):
         self._atoms_by_type: Dict[str, Set[Atom]] = {}
         self._links_by_type: Dict[str, Set[Link]] = {}
         self._name_index: Dict[str, Union[Atom, Link]] = {}
+        
+        self.db_path = db_path
+        self._init_db()
+
+    def _init_db(self):
+        """Initializes the Long-Term Memory (Disk) table for offloading."""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('CREATE TABLE IF NOT EXISTS memory (name TEXT PRIMARY KEY, is_link INTEGER, payload TEXT)')
+            conn.commit()
 
     def add_atom(self, atom: Atom) -> None:
         self.add_object(atom)
@@ -77,6 +90,44 @@ class AtomSpace(Category):
         if entity_type in self._links_by_type:
              res.update(self._links_by_type[entity_type])
         return res
+
+    def offload_to_disk(self, max_ram_entities: int = 2000) -> int:
+        """
+        Moves excess Nodes and Links from RAM to the local SQLite database (Long-Term Memory).
+        Ensures the agent doesn't crash from OOM during infinite streaming.
+        """
+        if len(self.objects) <= max_ram_entities:
+            return 0
+            
+        # Select the oldest/first N items to flush to disk
+        to_remove_count = len(self.objects) - max_ram_entities
+        objects_to_offload = list(self.objects)[:to_remove_count]
+        
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            for obj in objects_to_offload:
+                is_link = 1 if isinstance(obj, Link) else 0
+                # Simple serialization
+                payload = json.dumps({"type": obj.type, "data": str(obj.data)})
+                cursor.execute("INSERT OR REPLACE INTO memory VALUES (?, ?, ?)", 
+                             (obj.name, is_link, payload))
+                
+                # Cleanup RAM
+                self.objects.discard(obj)
+                if isinstance(obj, Link):
+                    self.morphisms.discard(obj)
+                    if obj.type in self._links_by_type:
+                        self._links_by_type[obj.type].discard(obj)
+                else:
+                    if obj.type in self._atoms_by_type:
+                        self._atoms_by_type[obj.type].discard(obj)
+                        
+                if obj.name in self._name_index:
+                    del self._name_index[obj.name]
+                    
+            conn.commit()
+            
+        return to_remove_count
 
     def prune_hypotheses(self, confidence_threshold: float = 0.05) -> int:
         """
