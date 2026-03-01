@@ -144,8 +144,16 @@ $$ f_{out} \Leftarrow \vec{f_A} $$
 $$ c_{out} \Leftarrow \frac{\vec{c_B} \cdot \vec{c_A} \cdot \vec{f_B} \cdot \vec{f_A}}{\vec{f_A} + \vec{f_B} - (\vec{f_A} \cdot \vec{f_B}) + \epsilon} $$
 By executing this as a sparse tensor operation, an Apple Silicon GPU evaluates hundreds of thousands of hypotheses in milliseconds. 
 
+### 5.4 Structural Factorization (Categorical MLA)
+To solve the "KV-cache" RAM explosion inherent to massive context evaluation, SAGE is inspired by the **Multi-Head Latent Attention (MLA)** architecture found in DeepSeek-V3.
+
+Instead of testing a generic causal rule (e.g., Gravity) against 100,000 specific entities ($O(N)$ Do-Calculus simulations), SAGE mathematically factorizes the logic:
+1. **Latent Core Extraction:** SAGE distills the Structural Causal Model back down to a pure Category Theory Morphism without specific Nodes attached ($M : X \to Y$).
+2. **Singular Simulation:** SAGE runs the Do-Calculus intervention on this Latent Core exactly once in $O(1)$ time to verify standard logical confidence.
+3. **Array Broadcast (Attention Matching):** SAGE queries the AtomSpace for all Nodes mapping to the Latent Core properties, creating a matching "Query Array". SAGE uses the Tensor Arrays from Section 5.3 to instantaneously broadcast the $O(1)$ confidence score down into the $100,000$ matching Nodes, skipping $100,000$ redundant SCM simulations.
+
 **Theoretical Time Complexity:** 
-With tensor acceleration, evaluating $\sim 10$ million rules of explicit physics takes $\sim 2$ hours of offline ingestion. Generating the leap from physics to chemistry autonomously requires an estimated $\sim 300$ hours of continuous laptop background processing, which is reducible to $\sim 72$ hours using human algorithmic "nudging" (Hybrid Bootstrapping).
+With tensor acceleration and categorical MLA, evaluating $\sim 10$ million rules of explicit physics takes $\sim 2$ hours of offline ingestion. Generating the leap from physics to chemistry autonomously requires an estimated $\sim 300$ hours of continuous laptop background processing, which is reducible to $\sim 72$ hours using human algorithmic "nudging" (Hybrid Bootstrapping).
 
 ---
 
