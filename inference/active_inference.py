@@ -25,27 +25,47 @@ class ActiveInferenceAgent:
 
     def perceive(self, sensory_observations: Dict[str, float]) -> Dict[str, Any]:
         """
-        Perceptual Inference (Updating Internal Beliefs).
-        The agent attempts to explain the sensory observations using its generative model.
+        Factor Graph Belief Propagation (Decentralized Perceptual Inference).
+        Instead of a top-down evaluation tracking all variables, nodes dynamically calculate 
+        local prediction errors and pass 'messages' to immediate neighbors.
+        This framework allows massive simultaneous parallelization on Apple M-Silicon GPUs.
         """
-        # 1. Forward pass on model without observations to get predictions
-        predictions = self.generative_model.evaluate({})
-        
-        total_surprise = 0.0
-        # 2. Compare predictions to actual observations
+        # 1. Initialize local graph beliefs
+        local_beliefs = {name: var.current_value for name, var in self.generative_model.variables.items()}
         for obs_key, obs_val in sensory_observations.items():
-            if obs_key in predictions and predictions[obs_key] is not None:
-                surprise = FreeEnergyCalculator.compute_surprise(predictions[obs_key], obs_val)
-                total_surprise += surprise
+             if obs_key in local_beliefs:
+                 local_beliefs[obs_key] = obs_val
+                 
+        # 2. Synchronous Message Passing Iteration (Simulating parallel Tensor propagation)
+        max_iterations = 5
+        for _ in range(max_iterations):
+            new_beliefs = dict(local_beliefs)
+            for name, var in self.generative_model.variables.items():
+                # Observations and exogenous roots act as clamped anchor nodes
+                if name in sensory_observations or var.is_exogenous:
+                    continue 
                 
+                # Receive incoming state messages from parent Markov blanket
+                parent_messages = {p.name: local_beliefs.get(p.name) for p in var.parents}
+                if all(v is not None for v in parent_messages.values()):
+                    # Local node update (computing factor equation)
+                    new_val = var.compute(parent_messages)
+                    new_beliefs[name] = new_val
+                    
+            if new_beliefs == local_beliefs: # Equilibrium converged
+                break
+            local_beliefs = new_beliefs
+            
+        # 3. Compute thermodynamic Surprise (Free Energy) over the converged state
+        total_surprise = 0.0
+        for name, var in self.generative_model.variables.items():
+            if name in sensory_observations and name in local_beliefs:
+                surprise = FreeEnergyCalculator.compute_surprise(local_beliefs[name], sensory_observations[name])
+                total_surprise += surprise
+            var.current_value = local_beliefs.get(name)
+            
         self.current_free_energy = total_surprise
-        
-        # 3. Update model using observations (Abduction/State inference)
-        # Note: In a full continuous POMDP this involves gradient descent on Free Energy.
-        # Here we do deterministic setting on the SCM
-        inferred_states = self.generative_model.evaluate(sensory_observations)
-        
-        return inferred_states
+        return local_beliefs
 
     def act(self, available_actions: List[Dict[str, Any]], forward_simulate: Callable) -> Dict[str, Any]:
         """

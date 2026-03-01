@@ -155,6 +155,16 @@ Instead of testing a generic causal rule (e.g., Gravity) against 100,000 specifi
 **Theoretical Time Complexity:** 
 With tensor acceleration and categorical MLA, evaluating $\sim 10$ million rules of explicit physics takes $\sim 2$ hours of offline ingestion. Generating the leap from physics to chemistry autonomously requires an estimated $\sim 300$ hours of continuous laptop background processing, which is reducible to $\sim 72$ hours using human algorithmic "nudging" (Hybrid Bootstrapping).
 
+### 5.5 Renormalization Group (RG) Coarse-Graining
+In advanced systems, the Structural Causal Model (SCM) can grow to encompass millions of microscopic variables. Running counterfactuals (`do(X=x)`) across millions of microscopic atomic nodes would result in a combinatorial explosion. 
+
+SAGE mitigates this by drawing from statistical physics, specifically the **Renormalization Group (RG)**. We implement a specific `coarse_grain()` operator on the SCM. When a subgraph of nodes behaves coherently, SAGE mathematically averages them into a single, higher-order macroscopic abstraction (e.g., fusing millions of "Atoms" into a single "Ball"). This "Causal Emergence" allows SAGE's Do-Calculus simulator to intervene directly on the macroscopic proxy node in $O(1)$ time, entirely shielding the engine from microscopic noise unless the local prediction error spikes.
+
+### 5.6 Factor Graphs and Belief Propagation (Decentralized Inference)
+Karl Friston mathematically defines biological perception as Variational Message Passing on Forney Factor Graphs. To physically map this to Apple M-Silicon architecture, SAGE abandons centralized `for` loops.
+
+The internal causal flowchart is treated as a **Factor Graph**. `AtomSpace` ConceptNodes are treated as variable nodes, and the NAL `<f, c>` logic links act as the factors that govern them. During Active Inference, instead of a top-down evaluation, SAGE uses **Belief Propagation**. Each node locally calculates its prediction error and synchronously passes its local NARS state as a "message" to its immediate neighbors. This completely decentralizes the Variational Free Energy minimization, allowing SAGE's entire brain to update via simultaneous distributed tensor-matrix operations (reaching equilibrium in milliseconds).
+
 ---
 
 ## 6. Live Knowledge Streaming

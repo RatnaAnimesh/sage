@@ -84,5 +84,27 @@ class SCM:
                      results[name] = val
         return results
 
+    def coarse_grain(self, macro_name: str, micro_names: List[str], aggregation_fn: Callable[..., Any]) -> CausalVariable:
+        """
+        Renormalization Group (RG) Coarse-Graining Operator.
+        Takes a cluster of microscopic variables (e.g., thousands of atoms) and fuses them 
+        into a single macroscopic variable (e.g., 'Ball'). 
+        Instead of evaluating Do-Calculus on 1,000 nodes, SAGE can intervene directly on 
+        the macroscopic proxy node in O(1) time.
+        """
+        macro_var = CausalVariable(macro_name, is_exogenous=False)
+        self.add_variable(macro_var)
+        
+        micro_vars = [self.variables[name] for name in micro_names if name in self.variables]
+        
+        # Link the microscopic states to the macroscopic wrapper
+        for mv in micro_vars:
+            macro_var.add_parent(mv)
+            
+        # The equation that defines the macro property (e.g., Center of Mass average)
+        macro_var.set_equation(aggregation_fn)
+        
+        return macro_var
+
     def __repr__(self) -> str:
         return f"<SCM '{self.name}': {len(self.variables)} variables>"
