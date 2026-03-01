@@ -108,17 +108,14 @@ Because SAGE's own computer code is represented as logic nodes inside its own At
 
 However, to prevent SAGE from accidentally breaking itself, it uses a **Gödel Machine** optimizer. Before SAGE changes a single line of code, its internal proof-searcher must mathematically *prove*, using logic theorems, that the new code will be strictly better at lowering Free Energy than the old code. If the proof fails, the modification is immediately rejected. SAGE only gets monotonically smarter.
 
-## 4.4 The Genesis Bootstrapper (Autonomy from Scratch)
-Most AI needs petabytes of human-generated text to learn anything. What happens if we give SAGE nothing but four basic mathematical axioms (Peano Arithmetic and Set Theory) and turn it on?
+## 4.4 Guided Epistemic Bootstrapping (The Hybrid Curriculum)
+While pure autonomous discovery from basic math axioms (a genesis simulation) is theoretically possible, it is computationally inefficient for rapidly scaling an AGI. Instead, SAGE utilizes a **Hybrid Curriculum** to bridge domains.
 
-1. **Axiom 1:** Zero is a Number.
-2. **Axiom 2:** Every Number has a Successor.
-3. **Axiom 3:** Collections contain Entities.
-4. **Axiom 4:** Successors increase Quantity.
+1. **Explicit Foundation:** SAGE is explicitly ingested with thousands of verified axioms mapping the laws of Mathematics and Classical Physics (e.g., `(Energy, Flows_To, Lowest_State)`, `(Atomic_Particles, Possess, Energy)`).
+2. **Autonomous Foraging:** SAGE's Epistemic Foraging engine is activated. It takes the foundation of physics and begins utilizing NARS Induction to mathematically hallucinate new, overarching concepts.
+3. **Algorithmic Nudging:** To prevent SAGE from getting stuck in a local minimum (e.g., endlessly looping on physics theories without progressing), a human supervisor or secondary algorithm explicitly injects a "hint" triplet into the AtomSpace (e.g., `(Particles, Can_Be, Shared)`).
 
-SAGE enters "Genesis Mode." Using NARS Induction, it hypothesizes that applying the Successor rule repeatedly is a new concept, inventing **Addition**. Next, using Epistemic Foraging, it tries to minimize its mathematical uncertainty about "Quantity," hypothesizing that Entities can have a measurable location in a Collection—inventing **Spatial Geography / Position**. Finally, it tests if change in Position over time (Velocity) interacts with Quantity, deriving **Gravity**. 
-
-SAGE reconstructs the physical universe mathematically, layer by layer, verifying each new discovery against its Do-Calculus simulator so it never hallucinates.
+By coupling the hard-coded laws of physics with a slight structural nudge, SAGE's analogical discovery engine instantly bridges the gap, utilizing its internal causal simulation to independently deduce the laws of Molecular Chemistry (e.g., `Atoms_Share_Particles_To_Lower_Energy_State`). This process is executed iteratively up the stack into Biology and beyond.
 
 ### Proof 4.4.1: Epistemic Foraging (Curiosity via Shannon Entropy)
 To compel SAGE to discover new things, we mathematically reward it for searching maximum uncertainty. We modify the Expected Free Energy ($G$) calculation to prioritize *Epistemic Value*.
