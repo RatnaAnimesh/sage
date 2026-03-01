@@ -56,11 +56,16 @@ All of these Objects and Morphisms are stored in SAGE's working memory, called t
 Because SAGE lives in the real world, it never has perfectly complete information. It uses Pei Wang's **Non-Axiomatic Reasoning System (NARS)**. Whenever SAGE evaluates a fact, it assigns it a tuple: `<Frequency, Confidence>`.
 
 1. **Frequency ($f$)**: Out of all the times I've tested this, how often was it true? Let's say we're testing if swans are white. If SAGE has seen 4 white swans and 1 black swan, the positive evidence ($w^+$) is 4, and the total evidence ($w$) is 5.
-  $$ f = \frac{4}{5} = 0.8 $$ (Frequency is 80%)
+
+$$ f = \frac{4}{5} = 0.8 $$
+
+(Frequency is 80%)
 
 2. **Confidence ($c$)**: How much total total evidence do I actually have? Seeing 4 white swans out of 5 total swans doesn't mean much compared to seeing 4,000 out of 5,000. Confidence maps the total evidence $w$ bounded between 0 and 1, using a "horizon" constant $k$ (usually just $1$).
-  $$ c = \frac{w}{w + 1} $$
-  For our 5 swans: $c = \frac{5}{5 + 1} \approx 0.83$ (Confidence is 83%).
+
+$$ c = \frac{w}{w + 1} $$
+
+For our 5 swans: $c = \frac{5}{5 + 1} \approx 0.83$ (Confidence is 83%).
 
 When SAGE combines two facts, it updates these numbers mathematically.
 **The Deduction Rule:** If SAGE knows Fact 1 (with $f_1, c_1$) and Fact 2 (with $f_2, c_2$), the deduced conclusion has new values:
@@ -84,6 +89,7 @@ How do we motivate an AGI without a human constantly pressing a "reward" button?
 SAGE wakes up with "homeostatic preferences" (e.g., "I prefer to have a full battery"). When SAGE predicts the world should look one way, but its sensors tell it something different, it experiences **Surprise** (prediction error). SAGE's ultimate, unyielding goal is to minimize a mathematically calculable upper bound on this surprise, known as **Variational Free Energy ($\mathcal{F}$)**.
 
 The math breaks down into two core objectives:
+
 $$ \mathcal{F} = \text{Complexity} - \text{Accuracy} $$
 
 To minimize $\mathcal{F}$, SAGE runs a continuous two-step loop:
@@ -121,7 +127,9 @@ By coupling the hard-coded laws of physics with a slight structural nudge, SAGE'
 To compel SAGE to discover new things, we mathematically reward it for searching maximum uncertainty. We modify the Expected Free Energy ($G$) calculation to prioritize *Epistemic Value*.
 
 For a generated NARS hypothesis, its Epistemic Value ($EV$) is bounded by its Confidence ($c$) and the variance of its Frequency ($f$):
+
 $$ EV = (1 - c) \cdot [4f(1-f)] $$
+
 When SAGE knows a fact perfectly ($c=1.0$), $EV=0$. When SAGE generates a pure guess where the probability is a coin toss ($f=0.5, c=0.0$), $EV$ is maximized at $1.0$. SAGE is mathematically forced to run interventions continuously on its own edge of knowledge.
 
 ---
@@ -140,8 +148,11 @@ Evaluating 100,000 NARS hypotheses via a Python `while` loop requires $O(N)$ seq
 
 **Proof 5.3.1 (Vectorized Induction):** 
 To generate novel theories from premise matrices $A$ and $B$, NARS Induction operates symmetrically:
+
 $$ f_{out} \Leftarrow \vec{f_A} $$
+
 $$ c_{out} \Leftarrow \frac{\vec{c_B} \cdot \vec{c_A} \cdot \vec{f_B} \cdot \vec{f_A}}{\vec{f_A} + \vec{f_B} - (\vec{f_A} \cdot \vec{f_B}) + \epsilon} $$
+
 By executing this as a sparse tensor operation, an Apple Silicon GPU evaluates hundreds of thousands of hypotheses in milliseconds. 
 
 ### 5.4 Structural Factorization (Categorical MLA)
