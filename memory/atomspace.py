@@ -1,0 +1,82 @@
+"""
+Distributed AtomSpace Module for SAGE
+
+Implements a highly scalable, RAM-based hypergraph knowledge representation.
+Both declarative data and procedural algorithms are represented as Atoms (Nodes)
+and Links (Morphisms) seamlessly coexisting within this geometric space.
+"""
+
+from typing import Dict, List, Optional, Set, Tuple, Union, Any
+from sage.ontology.category import Category, CNode, Morphism
+
+
+class Atom(CNode):
+    """
+    An Atom in the Distributed AtomSpace. Inherits the categorical properties of a CNode.
+    Acts as the base unit of knowledge representation.
+    """
+    def __init__(self, name: str, atom_type: str = "ConceptNode", data: Any = None):
+        super().__init__(name, node_type=atom_type, data=data)
+
+
+class Link(Morphism):
+    """
+    A Link connecting Atoms in the AtomSpace. Inherits from categorical Morphism.
+    Because SAGE treats links equally, Links themselves can be the domain/codomain of other Links.
+    """
+    def __init__(self, name: str, domain: Union[Atom, 'Link'], codomain: Union[Atom, 'Link'], link_type: str = "EvaluationLink"):
+        # Type ignored for strict categorical typing in python, but conceptually valid in Hypergraphs
+        super().__init__(name, domain, codomain, morphism_type=link_type) # type: ignore
+
+
+class AtomSpace(Category):
+    """
+    The Hypergraph repository serving as SAGE's working and declarative memory.
+    Implements efficient querying over the vast web of conceptual connections.
+    """
+    def __init__(self, name: str = "Global_AtomSpace"):
+        super().__init__(name)
+        # Using Category's self.objects for Atoms and self.morphisms for Links
+        
+        # Fast-lookup indexes
+        self._atoms_by_type: Dict[str, Set[Atom]] = {}
+        self._links_by_type: Dict[str, Set[Link]] = {}
+        self._name_index: Dict[str, Union[Atom, Link]] = {}
+
+    def add_atom(self, atom: Atom) -> None:
+        self.add_object(atom)
+        
+        if atom.type not in self._atoms_by_type:
+            self._atoms_by_type[atom.type] = set()
+        self._atoms_by_type[atom.type].add(atom)
+        self._name_index[atom.name] = atom
+
+    def add_link(self, link: Link) -> None:
+        self.add_morphism(link)
+        
+        if link.type not in self._links_by_type:
+            self._links_by_type[link.type] = set()
+        self._links_by_type[link.type].add(link)
+        self._name_index[link.name] = link
+        
+        # Ensure endpoints exist
+        if isinstance(link.domain, Atom) and link.domain not in self.objects:
+             self.add_atom(link.domain)
+        if isinstance(link.codomain, Atom) and link.codomain not in self.objects:
+             self.add_atom(link.codomain)
+
+    def get_atom(self, name: str) -> Optional[Atom]:
+        element = self._name_index.get(name)
+        return element if isinstance(element, Atom) else None
+
+    def query_by_type(self, entity_type: str) -> Set[Union[Atom, Link]]:
+        """Retrieve all Atoms or Links of a specific type."""
+        res = set()
+        if entity_type in self._atoms_by_type:
+             res.update(self._atoms_by_type[entity_type])
+        if entity_type in self._links_by_type:
+             res.update(self._links_by_type[entity_type])
+        return res
+
+    def __repr__(self) -> str:
+        return f"<AtomSpace '{self.name}': {len(self.objects)} Atoms, {len(self.morphisms)} Links>"
