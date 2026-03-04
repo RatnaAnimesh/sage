@@ -9,6 +9,8 @@ The agent updates beliefs (Perceptual Inference) and takes actions
 from typing import Dict, Any, List, Callable
 from sage.inference.free_energy import FreeEnergyCalculator
 from sage.causality.scm import SCM
+from sage.causality.koopman import DynamicCausalSimulator
+from sage.optimizations.mps_tensor_network import MatrixProductStateSearch
 
 class ActiveInferenceAgent:
     """
@@ -22,6 +24,10 @@ class ActiveInferenceAgent:
         self.preferences = homeostatic_goals
         
         self.current_free_energy = 0.0
+        
+        # Phase 15 Dynamic Mathematics
+        self.dynamic_simulator = DynamicCausalSimulator()
+        self.tensor_network: MatrixProductStateSearch = None
 
     def perceive(self, sensory_observations: Dict[str, float]) -> Dict[str, Any]:
         """
@@ -67,20 +73,42 @@ class ActiveInferenceAgent:
         self.current_free_energy = total_surprise
         return local_beliefs
 
-    def act(self, available_actions: List[Dict[str, Any]], forward_simulate: Callable) -> Dict[str, Any]:
+    def act(self, available_actions: List[Dict[str, Any]], current_state: float = 1.0) -> Dict[str, Any]:
         """
         Active Inference (Action).
         The agent selects the action that minimizes Expected Free Energy (EFE) in the future.
+        Leverages Koopman SDE dynamics and MPS Tensor Contraction bounds.
         """
         best_action = None
         min_efe = float('inf')
         
+        # Re-initialize the sequence network for topological scaling bounds
+        variables = list(self.generative_model.variables.keys())
+        # Append action types to network to track them
         for action in available_actions:
-            # 1. Simulate the future using the generative model + Do-Calculus
-            # forward_simulate should use DoCalculus.counterfactual under the hood
-            expected_outcomes = forward_simulate(self.generative_model, action)
+            if 'action_type' in action:
+                variables.append(action['action_type'])
+                
+        self.tensor_network = MatrixProductStateSearch(variables)
+        
+        for action in available_actions:
+            # 1. Use the continuous Koopman operator to calculate dynamic physics intervention
+            action_state_target = 1.0 if action.get("direction") == "forward" else 0.5
+            predicted_koopman_state = self.dynamic_simulator.simulate_do_intervention(current_state, action_state_target)
             
-            # 2. Calculate EFE (Risk + Ambiguity) relative to preferences
+            # 2. Factor the Matrix Product State to calculate absolute Do-Calculus topological confidence
+            # In a live system, evaluate marginal confidence against core homeostatic variables.
+            # Here we mock retrieving the scalar from the MPS pipeline for the EFE array.
+            action_type = action.get('action_type', 'unknown')
+            # Assuming 'Hunger' or another variable is the primary preference
+            pref_var = list(self.preferences.keys())[0] if self.preferences else 'unknown' 
+            tensor_confidence = self.tensor_network.evaluate_do_calculus(action_type, pref_var)
+            
+            # Composite expected outcomes based on the rigorous tensor math and continuous SDE operator
+            expected_outcomes = {"expected_surprise": predicted_koopman_state * (1.0 - tensor_confidence), 
+                                 "preference_alignment": tensor_confidence}
+            
+            # 3. Calculate EFE (Risk + Ambiguity) relative to preferences
             efe = FreeEnergyCalculator.expected_free_energy(expected_outcomes, self.preferences)
             
             # 3. Select Action

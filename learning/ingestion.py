@@ -10,6 +10,7 @@ from typing import List, Tuple, Optional, Dict, Any
 from sage.memory.atomspace import AtomSpace, Atom, Link
 from sage.logic.nal import NALTruthValue, create_truth_from_evidence
 from sage.causality.scm import SCM, CausalVariable
+from sage.learning.persistent_homology import SymbolGrounder
 
 class KnowledgeIngestor:
     """
@@ -18,6 +19,17 @@ class KnowledgeIngestor:
     def __init__(self, atomspace: AtomSpace, causal_model: Optional[SCM] = None):
         self.space = atomspace
         self.scm = causal_model
+        self.symbol_grounder = SymbolGrounder(atomspace)
+        
+    def ingest_continuous_stream(self, raw_sensor_stream: List[Tuple[float, float]]) -> Atom:
+        """
+        Phase 15 Geometric Symbol Grounding.
+        Ingests continuous data directly. Converts pixel arrays into discrete logic
+        Atoms autonomously via Topological Persistent Homology.
+        """
+        print(f"[Ingestor] Received continuous data array. Attempting TDA geometric crystallization...")
+        discrete_atom = self.symbol_grounder.ground_sensor_data(raw_sensor_stream)
+        return discrete_atom
 
     def ingest_triplets(self, facts: List[Tuple[str, str, str, float, float]]) -> None:
         """

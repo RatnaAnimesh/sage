@@ -41,7 +41,8 @@ class SOARAgent:
         # Identify valid actions from procedural memory
         valid_actions = self._get_applicable_actions()
         
-        selected_action = self.engine.act(valid_actions, self._simulate_action)
+        # SAGE uses Koopman SDEs and Tensor Networks natively inside `act`
+        selected_action = self.engine.act(valid_actions)
         return selected_action
 
     def _handle_impasse(self, observations: Dict[str, float]) -> Dict[str, Any]:
@@ -75,7 +76,3 @@ class SOARAgent:
             {"action_type": "observe", "target": "environment"}
         ]
 
-    def _simulate_action(self, model: SCM, action: Dict[str, Any]) -> Dict[str, float]:
-        """Wrapper to pass the SCM generative model to the Active Inference engine's planner."""
-        # Uses Do-Calculus to intervene on the model. (Stubbed expectation for now)
-        return {"expected_surprise": 0.5, "preference_alignment": 0.9}
