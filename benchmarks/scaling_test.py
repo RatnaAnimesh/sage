@@ -16,7 +16,8 @@ def get_memory_usage():
         return process.memory_info().rss / 1024 / 1024  # in MB
     except ImportError:
         import resource
-        return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024  # macOS: kbytes to MB
+        # macOS: ru_maxrss is in bytes
+        return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024)
 
 def run_benchmark(target_nodes):
     print(f"\n--- Benchmarking Scale: {target_nodes:,} Nodes ---")

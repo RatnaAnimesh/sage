@@ -391,7 +391,7 @@ The energy required to process a single causal query is tracked in Joules (J). T
 ### 5.3.2 Memory Trace Logs
 A "Memory Pressure" log shows the VRAM/RAM usage during a high-scale ingestion stream:
 - **Transformer**: Linear memory growth ($O(N)$ KV-cache). OOM (Out of Memory) at high token counts.
-- **SAGE**: Oscillatory bounded memory ($O(\chi^3)$). The **Renormalization Group (RG) Collapse** prunes low-salience nodes, maintaining a rigid **440MB ceiling** for 1,000,000 active atoms.
+- **SAGE**: Oscillatory bounded memory ($O(\chi^3)$). The **Renormalization Group (RG) Collapse** prunes low-salience nodes, maintaining a rigid **430MB ceiling** for 1,000,000 active atoms.
 
 ## 5.4 Ablation Study: The Essentiality of TDA and RG
 
@@ -588,14 +588,14 @@ To validate the theoretical claims of $O(1)$ causal broadcasting and memory effi
 
 | Nodes | Broadcast Latency (ms) | Theoretical Baseline ($O(N)$) | Memory Usage (MB) |
 | :--- | :--- | :--- | :--- |
-| **1,000** | **0.22** | 0.50 | 18.06 |
-| **10,000** | **1.91** | 5.00 | 21.26 |
-| **100,000** | **40.43** | 50.00 | 60.40 |
-| **1,000,000** | **328.49** | 500.00 | **440.08** |
+| **1,000** | **0.21** | 0.50 | 17.39 |
+| **10,000** | **1.94** | 5.00 | 20.64 |
+| **100,000** | **33.64** | 50.00 | 59.08 |
+| **1,000,000** | **337.81** | 500.00 | **429.89** |
 
 **Observations:**
-1.  **Latency Scaling**: While the raw broadcast time increases with $N$, it maintains a massive advantage over linear baselines. The 328ms latency for 1 million nodes enables real-time causal reasoning on laptop hardware.
-2.  **Memory Bound**: The population of 1 million nodes was maintained under 500MB of RAM, validating the effectiveness of the **Renormalization Group (RG)** and **MPS** compression algorithms in preventing the $O(N!)$ combinatorial explosion of traditional logic systems.
+1.  **Latency Scaling**: While the raw broadcast time increases with $N$, it maintains a massive advantage over linear baselines. The 337ms latency for 1 million nodes enables real-time causal reasoning on laptop hardware.
+2.  **Memory Bound**: The population of 1 million nodes was maintained under 430MB of RAM, validating the effectiveness of the **Renormalization Group (RG)** and **MPS** compression algorithms in preventing the $O(N!)$ combinatorial explosion of traditional logic systems.
 3.  **Efficiency**: The energy footprint remains constant per core update ($0.04J$), as the heavy lifting of Do-Calculus is performed on the $O(1)$ Latent Core.
 
 

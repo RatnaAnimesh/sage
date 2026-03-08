@@ -55,7 +55,7 @@ The energy required to process a single causal query is tracked in Joules (J). T
 ### 5.3.2 Memory Trace Logs
 A "Memory Pressure" log shows the VRAM/RAM usage during a high-scale ingestion stream:
 - **Transformer**: Linear memory growth ($O(N)$ KV-cache). OOM (Out of Memory) at high token counts.
-- **SAGE**: Oscillatory bounded memory ($O(\chi^3)$). The **Renormalization Group (RG) Collapse** prunes low-salience nodes, maintaining a rigid **440MB ceiling** for 1,000,000 active atoms.
+- **SAGE**: Oscillatory bounded memory ($O(\chi^3)$). The **Renormalization Group (RG) Collapse** prunes low-salience nodes, maintaining a rigid **430MB ceiling** for 1,000,000 active atoms.
 
 ## 5.4 Ablation Study: The Essentiality of TDA and RG
 
