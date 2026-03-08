@@ -8,14 +8,18 @@ FILES = [
     "paper/02_ontology_and_memory.md",
     "paper/03_inference_and_causality.md",
     "paper/04_computational_optimizations.md",
-    "paper/05_experiments_and_conclusion.md"
+    "paper/05_experiments_and_conclusion.md",
+    "paper/06_discussion_and_rebuttals.md",
+    "paper/07_conclusion_and_future_work.md",
+    "paper/08_appendix.md",
+    "paper/09_glossary.md",
+    "paper/10_comparative_taxonomy.md"
 ]
 
 OUTPUT_TEX = "arxiv_submission/sage_paper.tex"
 
 LATEX_PREAMBLE = r"""\documentclass[10pt,twocolumn,letterpaper]{article}
 
-\usepackage{cvpr}
 \usepackage{times}
 \usepackage{epsfig}
 \usepackage{graphicx}
@@ -29,9 +33,6 @@ LATEX_PREAMBLE = r"""\documentclass[10pt,twocolumn,letterpaper]{article}
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\C}{\mathcal{C}}
 
-\cvprfinalcopy
-
-\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 \begin{document}

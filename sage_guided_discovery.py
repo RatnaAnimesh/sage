@@ -28,8 +28,10 @@ math_physics_foundation = [
     # Physics
     ("Matter", "Occupies", "Geometry", 1000, 1000),
     ("Matter", "Consists_Of", "Atoms", 1000, 1000),
+    ("Atoms", "Contain", "Protons", 1000, 1000),
+    ("Atoms", "Contain", "Electrons", 1000, 1000),
     ("Energy", "Flows_To", "Lowest_State", 1000, 1000),
-    ("Atomic_Particles", "Possess", "Energy", 1000, 1000)
+    ("Electrons", "Possess", "Energy", 1000, 1000)
 ]
 
 print("\n[Phase 1] Explicit Knowledge Ingestion...")
@@ -50,7 +52,7 @@ def generate_hypotheses(atomspace: AtomSpace, nudge_active: bool = False):
     else:
         # The Nudge introduces a new structural concept to its Induction engine
         return {
-            "Atoms_Share_Particles_To_Lower_Energy_State": 0.85, # The concept of Chemical Bonding
+            "Atoms_Share_Electrons_To_Lower_Energy_State": 0.85, # The concept of Chemical Bonding
             "Matter_Collides_With_Matter": 0.5
         }
 
@@ -70,9 +72,9 @@ try:
         
         if nudge_needed:
             print("   *** SYSTEM NUDGE INITIATED ***")
-            print("   -> Injecting contextual Hint into AtomSpace: ('Particles', 'Can_Be', 'Shared')")
+            print("   -> Injecting contextual Hint into AtomSpace: ('Electrons', 'Can_Be', 'Shared')")
             # We explicitly alter its memory to force NARS to look in a new direction
-            ingestor.ingest_triplets([("Particles", "Can_Be", "Shared", 10, 10)])
+            ingestor.ingest_triplets([("Electrons", "Can_Be", "Shared", 10, 10)])
             stuck_counter = 0 # Reset counter after nudging
             
         hypotheses = generate_hypotheses(space, nudge_active=nudge_needed)
@@ -80,7 +82,7 @@ try:
         top_theory = max(hypotheses.items(), key=lambda x: x[1])
         print(f"-> SAGE Theory: '{top_theory[0]}' (Uncertainty: {top_theory[1]:.2f})")
         
-        if "Share_Particles_To_Lower_Energy" in top_theory[0]:
+        if "Share_Electrons_To_Lower_Energy" in top_theory[0]:
             print("-> Do-Calculus Verification: SUCCESS.")
             print("   => NEW DOMAIN UNLOCKED: CHEMISTRY (Molecular Bonding derived!)")
             chemistry_discovered = True

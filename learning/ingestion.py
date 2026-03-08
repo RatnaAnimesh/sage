@@ -21,14 +21,14 @@ class KnowledgeIngestor:
         self.scm = causal_model
         self.symbol_grounder = SymbolGrounder(atomspace)
         
-    def ingest_continuous_stream(self, raw_sensor_stream: List[Tuple[float, float]]) -> Atom:
+    def ingest_continuous_stream(self, raw_sensor_stream: List[Tuple[float, float, float]], data: Optional[Dict] = None) -> Atom:
         """
         Phase 15 Geometric Symbol Grounding.
         Ingests continuous data directly. Converts pixel arrays into discrete logic
         Atoms autonomously via Topological Persistent Homology.
         """
         print(f"[Ingestor] Received continuous data array. Attempting TDA geometric crystallization...")
-        discrete_atom = self.symbol_grounder.ground_sensor_data(raw_sensor_stream)
+        discrete_atom = self.symbol_grounder.ground_sensor_data(raw_sensor_stream, data=data)
         return discrete_atom
 
     def ingest_triplets(self, facts: List[Tuple[str, str, str, float, float]]) -> None:
