@@ -13,7 +13,8 @@ FILES = [
     "paper/07_conclusion_and_future_work.md",
     "paper/08_appendix.md",
     "paper/09_glossary.md",
-    "paper/10_comparative_taxonomy.md"
+    "paper/10_comparative_taxonomy.md",
+    "paper/11_references.md"
 ]
 
 OUTPUT_TEX = "arxiv_submission/sage_paper.tex"

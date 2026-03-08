@@ -12,7 +12,8 @@ files = [
     "paper/07_conclusion_and_future_work.md",
     "paper/08_appendix.md",
     "paper/09_glossary.md",
-    "paper/10_comparative_taxonomy.md"
+    "paper/10_comparative_taxonomy.md",
+    "paper/11_references.md"
 ]
 
 header = """<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
