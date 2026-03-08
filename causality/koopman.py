@@ -51,7 +51,7 @@ class LinearKoopmanMatrix:
         self.n = n_observables
         # Initialize an identity-like transition matrix
         self.K = [[1.0 if i == j else 0.0 for j in range(self.n)] for i in range(self.n)]
-        self.learning_rate = 0.01
+        self.learning_rate = 0.0001
 
     def propagate(self, current_observables: List[float]) -> List[float]:
         """K * g(x_t) -> g(x_{t+1})"""

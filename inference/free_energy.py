@@ -30,25 +30,29 @@ class FreeEnergyCalculator:
         return (error ** 2) / (2 * variance)
 
     @staticmethod
-    def expected_free_energy(action_expected_outcomes: Dict[str, float], desired_preferences: Dict[str, float]) -> float:
+    def expected_free_energy(expected_outcomes: Dict[str, float], preferences: Dict[str, float], ambiguity: float = 0.1) -> float:
         """
-        Calculates Expected Free Energy (G) for future planning.
-        Used to select actions. Combines:
-        1. Epistemic value (Exploration): reducing uncertainty.
-        2. Pragmatic value (Exploitation): fulfilling homeostatic preferences.
+        Calculates Expected Free Energy (G) for action selection.
+        G = Risk + Ambiguity
         
-        Simplified representation of: G ≈ Risk + Ambiguity
+        Where:
+        - Risk (Pragmatic Value): KL[Q(s|pi) || P(s)]
+        - Ambiguity (Epistemic Value): H[Q(s|pi)] -- (Simplified as a curiosity factor)
         """
-        efe = 0.0
-        for state, expected_prob in action_expected_outcomes.items():
-            # Pragmatic Value: How well does this align with our goals?
-            preference_prob = desired_preferences.get(state, 0.01) # Small prior if unstated
-            
-            # Risk/KL Divergence between expected outcomes and preferred outcomes
-            if expected_prob > 0:
-                efe += expected_prob * math.log(expected_prob / preference_prob)
+        risk = 0.0
+        for state, prob in expected_outcomes.items():
+            if state in preferences:
+                # KL Divergence: expected vs preferred (Pragmatic)
+                pref_prob = preferences[state]
+                if prob > 0 and pref_prob > 0:
+                    risk += prob * math.log(prob / pref_prob)
+            else:
+                # If the state is unknown, assume high surprise (Risk)
+                risk += 1.0 
                 
-            # Note: A full implementation would also calculate 'Ambiguity' here
-            # to drive the agent to explore uncertain epistemic states.
-            
-        return efe
+        # Epistemic Value (Inverted Ambiguity): 
+        # Drives the agent to explore states with high uncertainty/ambiguity.
+        # Here we subtract a curiosity term to lower G for novel/uncertain outcomes.
+        epistemic_curiosity = -ambiguity * sum(p * math.log(p) if p > 0 else 0 for p in expected_outcomes.values())
+        
+        return risk + epistemic_curiosity

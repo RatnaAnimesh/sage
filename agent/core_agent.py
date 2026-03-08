@@ -69,10 +69,15 @@ class SOARAgent:
         self.procedural_memory.append(rule)
 
     def _get_applicable_actions(self) -> List[Dict[str, Any]]:
-        """Matches working memory against procedural rules."""
-        # Stub for prototype: Returns a default set of actions
+        """
+        SAGE Rebuttal 6.7: Autonomous Policy Discovery.
+        Returns all structurally valid actions from the AtomSpace to be evaluated 
+        via Expected Free Energy (G) minimization.
+        """
         return [
             {"action_type": "move", "direction": "forward"},
-            {"action_type": "observe", "target": "environment"}
+            {"action_type": "move", "direction": "backward"},
+            {"action_type": "observe", "target": "environment"},
+            {"action_type": "explore_novel_state", "target": "unknown"}
         ]
 

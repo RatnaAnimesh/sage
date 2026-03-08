@@ -59,5 +59,33 @@ class EngramTape:
              return True
         return False
 
+    def renormalize(self, compression_threshold: float = 0.9):
+        """
+        SAGE Rebuttal 6.6: Hierarchical Renormalization.
+        Coarse-grains historical data into macroscopic summaries to prevent O(T) search bottlenecks.
+        Simulates the transition from granular episodic memory to stable semantic memory.
+        """
+        if len(self.sequence) < 10:
+            return  # Not enough data to renormalize
+            
+        # Identify 'Old' memories (the first 70% of the tape)
+        split_idx = int(len(self.sequence) * 0.7)
+        old_memories = self.sequence[:split_idx]
+        recent_memories = self.sequence[split_idx:]
+        
+        # Coarse-Graining: Collapse old memories into a single 'Macro-Engram'
+        # In this PoP, we aggregate the truth values and data summaries
+        macro_entry = {
+            "timestamp": old_memories[0]["timestamp"],
+            "data": f"Macro-Summary of {len(old_memories)} events",
+            "truth": sum(m["truth"] for m in old_memories) / len(old_memories),
+            "is_renormalized": True,
+            "span": (old_memories[0]["timestamp"], old_memories[-1]["timestamp"])
+        }
+        
+        # Replace the entire 'old' block with the single summary
+        self.sequence = [macro_entry] + recent_memories
+        self.head_position = len(self.sequence) - 1
+
     def __repr__(self) -> str:
-        return f"<EngramTape: {len(self.sequence)} sequences written>"
+        return f"<EngramTape: {len(self.sequence)} sequences (Renormalized)>"

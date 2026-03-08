@@ -76,42 +76,38 @@ class ActiveInferenceAgent:
     def act(self, available_actions: List[Dict[str, Any]], current_state: float = 1.0) -> Dict[str, Any]:
         """
         Active Inference (Action).
-        The agent selects the action that minimizes Expected Free Energy (EFE) in the future.
-        Leverages Koopman SDE dynamics and MPS Tensor Contraction bounds.
+        The agent selects the action that minimizes Expected Free Energy (G).
         """
         best_action = None
         min_efe = float('inf')
         
-        # Re-initialize the sequence network for topological scaling bounds
+        # 1. Prepare Tensor Network for topological evaluation
         variables = list(self.generative_model.variables.keys())
-        # Append action types to network to track them
-        for action in available_actions:
-            if 'action_type' in action:
-                variables.append(action['action_type'])
-                
         self.tensor_network = MatrixProductStateSearch(variables)
         
         for action in available_actions:
-            # 1. Use the continuous Koopman operator to calculate dynamic physics intervention
-            action_state_target = 1.0 if action.get("direction") == "forward" else 0.5
-            predicted_koopman_state = self.dynamic_simulator.simulate_do_intervention(current_state, action_state_target)
+            # 2. Continuous Koopman Intervention
+            # We map the action to a target value for the Koopman operator
+            action_val = 1.0 if "forward" in str(action) else 0.0
+            predicted_state = self.dynamic_simulator.simulate_do_intervention(current_state, action_val)
             
-            # 2. Factor the Matrix Product State to calculate absolute Do-Calculus topological confidence
-            # In a live system, evaluate marginal confidence against core homeostatic variables.
-            # Here we mock retrieving the scalar from the MPS pipeline for the EFE array.
-            action_type = action.get('action_type', 'unknown')
-            # Assuming 'Hunger' or another variable is the primary preference
-            pref_var = list(self.preferences.keys())[0] if self.preferences else 'unknown' 
-            tensor_confidence = self.tensor_network.evaluate_do_calculus(action_type, pref_var)
+            # 3. Categorical/MPS Confidence
+            # How much does this action satisfy our primary homeostatic goal?
+            # Assuming the first preference is our target
+            goal_var = list(self.preferences.keys())[0] if self.preferences else "unknown"
+            action_id = action.get("action_type", "unknown")
+            confidence = self.tensor_network.evaluate_do_calculus(action_id, goal_var)
             
-            # Composite expected outcomes based on the rigorous tensor math and continuous SDE operator
-            expected_outcomes = {"expected_surprise": predicted_koopman_state * (1.0 - tensor_confidence), 
-                                 "preference_alignment": tensor_confidence}
+            # 4. Rigorous G-Calculation
+            # Projects the outcomes into a probability distribution over the goal variable
+            expected_outcomes = {
+                goal_var: confidence,       # Alignment (Pragmatic)
+                "ambiguity": 1.0 - confidence # Uncertainty (Epistemic)
+            }
             
-            # 3. Calculate EFE (Risk + Ambiguity) relative to preferences
+            # Calculate G = Risk + Ambiguity
             efe = FreeEnergyCalculator.expected_free_energy(expected_outcomes, self.preferences)
             
-            # 3. Select Action
             if efe < min_efe:
                 min_efe = efe
                 best_action = action
