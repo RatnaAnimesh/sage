@@ -88,7 +88,13 @@ To validate the theoretical claims of $O(1)$ causal broadcasting and memory effi
 | **1,000** | **0.21** | 0.50 | 17.39 |
 | **10,000** | **1.94** | 5.00 | 20.64 |
 | **100,000** | **33.64** | 50.00 | 59.08 |
-| **1,000,000** | **337.81** | 500.00 | **429.89** |
+| **1,000,000** | **337.81** | 500.00 | 429.89 |
+| **10,000,000** | **3,844.13** | 5,000.00 | **2,952.80** |
+
+**Internet Influx Benchmark**:
+| Phase | Throughput (Events/sec) | Active Tape Buffer Size | Stability Result |
+| :--- | :--- | :--- | :--- |
+| Burst Influx | **3,008,132** | 21,430 | **Static Ceiling Reached** |
 
 **Observations**:
 1.  **Latency Scaling**: While the raw broadcast time increases with $N$, it maintains a massive advantage over linear baselines. The 337ms latency for 1 million nodes enables real-time causal reasoning.
